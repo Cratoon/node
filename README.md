@@ -134,7 +134,7 @@ When running validators or non-validators, you can use the following flags. The 
 - `--write-raw-book-diffs`: Writes every L1 order diff to `~/hl/data/node_raw_book_diffs/hourly/{date}/{hour}`. Note that raw book diffs can be a substantial amount of data.
 - `--write-hip3-oracle-updates`: Writes every HIP-3 deployer oracle update action to `~/hl/data/hip3_oracle_updates/hourly/{date}/{hour}`.
 - `--write-misc-events`: Writes miscellaneous event data to `~/hl/data/misc_events/hourly/{date}/{hour}`. See [docs](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/nodes/reading-l1-data#miscellaneous-events) for more details.
-- `--write-system-and-core-writer-actions`: Writes CoreWriter and HyperCore to HyperEVM transfer data indexed by HyperEVM tx hash and a unique system nonce to `~/hl/data/system_and_core_writer_actions/hourly/{date}/{hour}`.
+- `--write-system-and-core-writer-actions`: Writes CoreWriter and core-to-EVM transfer data indexed by EVM transaction hash and a unique system nonce to `~/hl/data/system_and_core_writer_actions/hourly/{date}/{hour}`.
 - `--batch-by-block`: Writes the above files with one block per line instead of one event per line. The batched data schema is `{local_time, block_time, block_number, events}`, where `events` is a list.
 - `--stream-with-block-info`: Writes events as they are processed instead of once per block, but uses the same data schema as `--batch-by-block` to include block metadata.
 - `--replica-cmds-style`: Configures what is written to `~/hl/data/replica_cmds/{start_time}/{date}/{height}`.
@@ -410,7 +410,7 @@ To exit consensus (i.e. “self jail”) and wait for the validator to leave the
 
 ### Jailing
 
-Performance and uptime are critical for the mainnet L1. To achieve this, a key feature of HyperBFT consensus is "jailing." When a validator is jailed, it can still participate in the consensus network by forwarding messages to peers, but does not vote on or propose blocks. To avoid jailing, it is recommended to achieve 200ms two-way latency to at least one‑third of validators by stake.
+Performance and uptime are critical for the mainnet L1. A key feature of the consensus protocol is "jailing." When a validator is jailed, it can still participate in the consensus network by forwarding messages to peers, but does not vote on or propose blocks. To avoid jailing, it is recommended to achieve 200ms two-way latency to at least one‑third of validators by stake.
 
 Once jailed, a validator can only be unjailed through the `unjailSelf` action (which will succeed only after the L1 time exceeds the "jailed until" time). Self‑jailing does not extend the jailing duration.
 
@@ -443,7 +443,7 @@ It is recommended that validators set up an alerting system to maintain optimal 
   ```
   Test the Slack alert configuration:
   ```bash
-  ~/hl-node --chain Testnet send-slack-alert "hello hyperliquid"
+  ~/hl-node --chain Testnet send-slack-alert "hello node"
   ```
 
 For **Mainnet**, use a similar configuration (with keys/channels specific to Mainnet if needed).
